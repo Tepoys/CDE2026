@@ -1021,7 +1021,6 @@ compare_clean() {
 
 case "$COMMAND" in
 clean-baseline)
-  clean_baseline "$@"
   ;;
 status)
   [[ $# -eq 0 ]] || die "status takes no arguments"
