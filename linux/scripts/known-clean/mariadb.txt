@@ -1,0 +1,5 @@
+/etc/mysql/mariadb.conf.d/50-server.cnf:bind-address            = 127.0.0.1
+mariadb  Ver 15.1 Distrib 10.3.39-MariaDB, for debian-linux-gnu (x86_64) using readline 5.2
+root@localhost
+service_active=active
+service_enabled=enabled

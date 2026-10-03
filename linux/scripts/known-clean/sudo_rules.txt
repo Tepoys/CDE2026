@@ -1,0 +1,6 @@
+/etc/sudoers:%admin ALL=(ALL) ALL
+/etc/sudoers:Defaults	env_reset
+/etc/sudoers:Defaults	mail_badpass
+/etc/sudoers:Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+/etc/sudoers:root	ALL=(ALL:ALL) ALL
+/etc/sudoers:%sudo	ALL=(ALL:ALL) ALL

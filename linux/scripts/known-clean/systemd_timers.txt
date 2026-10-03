@@ -1,0 +1,11 @@
+apt-daily.timer	apt-daily.service
+apt-daily-upgrade.timer	apt-daily-upgrade.service
+e2scrub_all.timer	e2scrub_all.service
+fstrim.timer	fstrim.service
+fwupd-refresh.timer	fwupd-refresh.service
+logrotate.timer	logrotate.service
+man-db.timer	man-db.service
+motd-news.timer	motd-news.service
+snapd.snap-repair.timer	snapd.snap-repair.service
+systemd-tmpfiles-clean.timer	systemd-tmpfiles-clean.service
+ua-timer.timer	ua-timer.service

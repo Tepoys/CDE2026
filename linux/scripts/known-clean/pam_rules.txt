@@ -1,0 +1,83 @@
+/etc/pam.d/atd:auth	required	pam_env.so user_readenv=1
+/etc/pam.d/atd:session    required   pam_limits.so
+/etc/pam.d/atd:session    required   pam_loginuid.so
+/etc/pam.d/chfn:auth		sufficient	pam_rootok.so
+/etc/pam.d/chsh:auth       required   pam_shells.so
+/etc/pam.d/chsh:auth		sufficient	pam_rootok.so
+/etc/pam.d/common-account:account	required			pam_permit.so
+/etc/pam.d/common-account:account	requisite			pam_deny.so
+/etc/pam.d/common-account:account	[success=1 new_authtok_reqd=done default=ignore]	pam_unix.so 
+/etc/pam.d/common-auth:auth	optional			pam_cap.so 
+/etc/pam.d/common-auth:auth	required			pam_permit.so
+/etc/pam.d/common-auth:auth	requisite			pam_deny.so
+/etc/pam.d/common-auth:auth	[success=1 default=ignore]	pam_unix.so nullok
+/etc/pam.d/common-password:password	required			pam_permit.so
+/etc/pam.d/common-password:password	requisite			pam_deny.so
+/etc/pam.d/common-password:password	[success=1 default=ignore]	pam_unix.so obscure sha512
+/etc/pam.d/common-session-noninteractive:session	[default=1]			pam_permit.so
+/etc/pam.d/common-session-noninteractive:session optional			pam_umask.so
+/etc/pam.d/common-session-noninteractive:session	required			pam_permit.so
+/etc/pam.d/common-session-noninteractive:session	required	pam_unix.so 
+/etc/pam.d/common-session-noninteractive:session	requisite			pam_deny.so
+/etc/pam.d/common-session:session	[default=1]			pam_permit.so
+/etc/pam.d/common-session:session	optional	pam_systemd.so 
+/etc/pam.d/common-session:session optional			pam_umask.so
+/etc/pam.d/common-session:session	required			pam_permit.so
+/etc/pam.d/common-session:session	required	pam_unix.so 
+/etc/pam.d/common-session:session	requisite			pam_deny.so
+/etc/pam.d/cron:session       required   pam_env.so
+/etc/pam.d/cron:session       required   pam_env.so envfile=/etc/default/locale
+/etc/pam.d/cron:session    required   pam_limits.so
+/etc/pam.d/cron:session    required     pam_loginuid.so
+/etc/pam.d/login:auth       optional   pam_faildelay.so  delay=3000000
+/etc/pam.d/login:auth       optional   pam_group.so
+/etc/pam.d/login:auth       requisite  pam_nologin.so
+/etc/pam.d/login:session    optional   pam_keyinit.so force revoke
+/etc/pam.d/login:session    optional   pam_lastlog.so
+/etc/pam.d/login:session    optional   pam_mail.so standard
+/etc/pam.d/login:session    optional   pam_motd.so motd=/run/motd.dynamic
+/etc/pam.d/login:session    optional   pam_motd.so noupdate
+/etc/pam.d/login:session       required   pam_env.so readenv=1
+/etc/pam.d/login:session       required   pam_env.so readenv=1 envfile=/etc/default/locale
+/etc/pam.d/login:session    required   pam_limits.so
+/etc/pam.d/login:session    required     pam_loginuid.so
+/etc/pam.d/login:session [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so close
+/etc/pam.d/login:session [success=ok ignore=ignore module_unknown=ignore default=bad] pam_selinux.so open
+/etc/pam.d/polkit-1:session       required   pam_env.so readenv=1 envfile=/etc/default/locale user_readenv=0
+/etc/pam.d/polkit-1:session       required   pam_env.so readenv=1 user_readenv=0
+/etc/pam.d/runuser:auth		sufficient	pam_rootok.so
+/etc/pam.d/runuser-l:auth		include		runuser
+/etc/pam.d/runuser-l:session		include		runuser
+/etc/pam.d/runuser-l:session		optional	pam_keyinit.so force revoke
+/etc/pam.d/runuser:session		optional	pam_keyinit.so revoke
+/etc/pam.d/runuser:session		required	pam_limits.so
+/etc/pam.d/runuser:session		required	pam_unix.so
+/etc/pam.d/sshd:account    required     pam_nologin.so
+/etc/pam.d/sshd:session    optional     pam_keyinit.so force revoke
+/etc/pam.d/sshd:session    optional     pam_mail.so standard noenv # [1]
+/etc/pam.d/sshd:session    optional     pam_motd.so  motd=/run/motd.dynamic
+/etc/pam.d/sshd:session    optional     pam_motd.so noupdate
+/etc/pam.d/sshd:session    required     pam_env.so # [1]
+/etc/pam.d/sshd:session    required     pam_env.so user_readenv=1 envfile=/etc/default/locale
+/etc/pam.d/sshd:session    required     pam_limits.so
+/etc/pam.d/sshd:session    required     pam_loginuid.so
+/etc/pam.d/sshd:session [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so close
+/etc/pam.d/sshd:session [success=ok ignore=ignore module_unknown=ignore default=bad]        pam_selinux.so open
+/etc/pam.d/su:auth       sufficient pam_rootok.so
+/etc/pam.d/sudo:session    required   pam_env.so readenv=1 envfile=/etc/default/locale user_readenv=0
+/etc/pam.d/sudo:session    required   pam_env.so readenv=1 user_readenv=0
+/etc/pam.d/su-l:account		include		su
+/etc/pam.d/su-l:auth		include		su
+/etc/pam.d/su-l:password	include		su
+/etc/pam.d/su-l:session		include		su
+/etc/pam.d/su-l:session		optional	pam_keyinit.so force revoke
+/etc/pam.d/su:session    optional   pam_mail.so nopen
+/etc/pam.d/su:session       required   pam_env.so readenv=1
+/etc/pam.d/su:session       required   pam_env.so readenv=1 envfile=/etc/default/locale
+/etc/pam.d/su:session    required   pam_limits.so
+/etc/pam.d/systemd-user:session optional pam_systemd.so
+/etc/pam.d/systemd-user:session  required pam_limits.so
+/etc/pam.d/systemd-user:session  required pam_loginuid.so
+/etc/pam.d/systemd-user:session  required pam_selinux.so close
+/etc/pam.d/systemd-user:session  required pam_selinux.so nottys open
+/etc/pam.d/vmtoolsd:account     required    pam_shells.so

@@ -1,0 +1,59 @@
+adm	4	syslog,bluey
+audio	29	
+backup	34	
+bin	2	
+bluey	1000	
+cdrom	24	bluey
+crontab	105	
+daemon	1	
+dialout	20	
+dip	30	bluey
+disk	6	
+fax	21	
+floppy	25	
+fwupd-refresh	116	
+games	60	
+gnats	41	
+input	107	
+irc	39	
+kmem	15	
+kvm	108	
+landscape	115	
+list	38	
+lp	7	
+lxd	117	bluey
+mail	8	
+man	12	
+messagebus	106	
+mysql	118	
+news	9	
+nogroup	65534	
+operator	37	
+plugdev	46	bluey
+proxy	13	
+render	109	
+root	0	
+sasl	45	
+shadow	42	
+src	40	
+ssh	114	
+staff	50	
+sudo	27	bluey
+sys	3	
+syslog	110	
+systemd-coredump	999	
+systemd-journal	101	
+systemd-network	102	
+systemd-resolve	103	
+systemd-timesync	104	
+tape	26	
+tcpdump	113	
+tss	111	
+tty	5	syslog
+users	100	bluey
+utmp	43	
+uucp	10	
+uuidd	112	
+video	44	
+voice	22	
+www-data	33	

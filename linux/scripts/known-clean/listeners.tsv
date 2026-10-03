@@ -1,0 +1,4 @@
+tcp	22
+tcp	3306
+tcp	53
+udp	53

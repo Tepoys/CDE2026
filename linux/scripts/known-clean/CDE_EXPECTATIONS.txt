@@ -1,0 +1,9 @@
+Known packet-derived Box 5 expectations used by this toolkit:
+- OS family/version target: Ubuntu 20.04
+- Scored SSH service: TCP/22
+- Scored MariaDB/MySQL service: TCP/3306
+- Expected local Blue Team account: blueteam
+- Expected database account named by packet: airship
+- Protected/out-of-scope competition accounts: scorebot, blackteam, red_scoring
+- Domain joined: yes, but the packet does not specify the implementation, so
+  domain-join configuration is NOT modeled by the clean baseline.

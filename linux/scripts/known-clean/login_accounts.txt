@@ -1,0 +1,3 @@
+bluey	UID=1000	SHELL=/bin/bash
+root	UID=0	SHELL=/bin/bash
+sync	UID=4	SHELL=/bin/sync

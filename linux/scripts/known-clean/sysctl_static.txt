@@ -1,0 +1,11 @@
+/etc/sysctl.d/10-console-messages.conf:kernel.printk = 4 4 1 7
+/etc/sysctl.d/10-ipv6-privacy.conf:net.ipv6.conf.all.use_tempaddr = 2
+/etc/sysctl.d/10-ipv6-privacy.conf:net.ipv6.conf.default.use_tempaddr = 2
+/etc/sysctl.d/10-kernel-hardening.conf:kernel.kptr_restrict = 1
+/etc/sysctl.d/10-link-restrictions.conf:fs.protected_hardlinks = 1
+/etc/sysctl.d/10-link-restrictions.conf:fs.protected_symlinks = 1
+/etc/sysctl.d/10-magic-sysrq.conf:kernel.sysrq = 176
+/etc/sysctl.d/10-network-security.conf:net.ipv4.conf.all.rp_filter=2
+/etc/sysctl.d/10-network-security.conf:net.ipv4.conf.default.rp_filter=2
+/etc/sysctl.d/10-ptrace.conf:kernel.yama.ptrace_scope = 1
+/etc/sysctl.d/10-zeropage.conf:vm.mmap_min_addr = 65536

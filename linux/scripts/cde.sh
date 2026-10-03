@@ -115,9 +115,12 @@ Typical workflow:
 USAGE
 }
 
-log()  { printf '[*] %s\n' "$*"; }
+log() { printf '[*] %s\n' "$*"; }
 warn() { printf '[WARN] %s\n' "$*" >&2; }
-die()  { printf '[ERROR] %s\n' "$*" >&2; exit 1; }
+die() {
+  printf '[ERROR] %s\n' "$*" >&2
+  exit 1
+}
 
 cleanup() {
   if [[ -n "${LOCAL_TMP:-}" && -d "$LOCAL_TMP" ]]; then
@@ -131,39 +134,59 @@ need_cmd() {
 }
 
 validate_port() {
-  [[ "$1" =~ ^[0-9]+$ ]] && (( "$1" >= 1 && "$1" <= 65535 )) || die "Invalid SSH port: $1"
+  [[ "$1" =~ ^[0-9]+$ ]] && (("$1" >= 1 && "$1" <= 65535)) || die "Invalid SSH port: $1"
 }
 
 # Parse global options before command.
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --target)
-      [[ $# -ge 2 ]] || die "--target requires a value"
-      TARGET="$2"; shift 2 ;;
-    --user)
-      [[ $# -ge 2 ]] || die "--user requires a value"
-      SSH_USER="$2"; shift 2 ;;
-    --port)
-      [[ $# -ge 2 ]] || die "--port requires a value"
-      SSH_PORT="$2"; shift 2 ;;
-    --clean-dir)
-      [[ $# -ge 2 ]] || die "--clean-dir requires a value"
-      CLEAN_DIR="$2"; shift 2 ;;
-    -h|--help)
-      usage; exit 0 ;;
-    --version)
-      echo "$VERSION"; exit 0 ;;
-    --)
-      shift; break ;;
-    -*)
-      die "Unknown global option: $1" ;;
-    *)
-      break ;;
+  --target)
+    [[ $# -ge 2 ]] || die "--target requires a value"
+    TARGET="$2"
+    shift 2
+    ;;
+  --user)
+    [[ $# -ge 2 ]] || die "--user requires a value"
+    SSH_USER="$2"
+    shift 2
+    ;;
+  --port)
+    [[ $# -ge 2 ]] || die "--port requires a value"
+    SSH_PORT="$2"
+    shift 2
+    ;;
+  --clean-dir)
+    [[ $# -ge 2 ]] || die "--clean-dir requires a value"
+    CLEAN_DIR="$2"
+    shift 2
+    ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  --version)
+    echo "$VERSION"
+    exit 0
+    ;;
+  --)
+    shift
+    break
+    ;;
+  -*)
+    die "Unknown global option: $1"
+    ;;
+  *)
+    break
+    ;;
   esac
 done
 
-[[ $# -ge 1 ]] || { usage; exit 1; }
-COMMAND="$1"; shift
+[[ $# -ge 1 ]] || {
+  usage
+  exit 1
+}
+COMMAND="$1"
+shift
 validate_port "$SSH_PORT"
 
 need_cmd ssh
@@ -175,7 +198,7 @@ LOCAL_TMP="$(mktemp -d)"
 HELPER_LOCAL="$LOCAL_TMP/remote-helper.sh"
 
 write_remote_helper() {
-  cat > "$HELPER_LOCAL" <<'REMOTE_HELPER_EOF'
+  cat >"$HELPER_LOCAL" <<'REMOTE_HELPER_EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
@@ -895,7 +918,8 @@ deploy_helper() {
 # Run a remote helper command with interactive sudo. The helper is copied
 # host -> box (allowed by packet v1.1), installed root-owned, executed, then removed.
 run_remote() {
-  local host="$1"; shift
+  local host="$1"
+  shift
   local remote
   remote="$(deploy_helper "$host")"
   local root_helper="/root/.cde-box5-helper-$$.sh"
@@ -913,7 +937,8 @@ run_remote() {
 # Same as run_remote, but intended for practice VM source. Kept separate so the
 # CDE no-copy rule is easy to reason about.
 run_practice_remote() {
-  local host="$1"; shift
+  local host="$1"
+  shift
   local dest="${SSH_USER}@${host}"
   local remote="$REMOTE_HELPER"
   scp "${SCP_ARGS[@]}" -q "$HELPER_LOCAL" "$dest:$remote"
@@ -964,7 +989,7 @@ clean_baseline() {
   mv "$staging" "$CLEAN_DIR"
   chmod -R go-rwx "$CLEAN_DIR"
 
-  cat > "$CLEAN_DIR/CDE_EXPECTATIONS.txt" <<EOF_EXPECT
+  cat >"$CLEAN_DIR/CDE_EXPECTATIONS.txt" <<EOF_EXPECT
 Known packet-derived Box 5 expectations used by this toolkit:
 - OS family/version target: Ubuntu 20.04
 - Scored SSH service: TCP/22
@@ -995,35 +1020,38 @@ compare_clean() {
 }
 
 case "$COMMAND" in
-  clean-baseline)
-    clean_baseline "$@"
-    ;;
-  status)
-    [[ $# -eq 0 ]] || die "status takes no arguments"
-    run_remote "$TARGET" status
-    ;;
-  baseline)
-    replace="no"
-    if [[ "${1:-}" == "--replace" ]]; then replace="yes"; shift; fi
-    [[ $# -eq 0 ]] || die "baseline only accepts optional --replace"
-    run_remote "$TARGET" baseline "$replace"
-    ;;
-  compare)
-    [[ $# -eq 0 ]] || die "compare takes no arguments"
-    run_remote "$TARGET" compare
-    ;;
-  compare-clean)
-    [[ $# -eq 0 ]] || die "compare-clean takes no arguments"
-    compare_clean
-    ;;
-  users|persistence|network|ssh|mariadb|audit)
-    [[ $# -eq 0 ]] || die "$COMMAND takes no arguments"
-    run_remote "$TARGET" "$COMMAND"
-    ;;
-  help)
-    usage
-    ;;
-  *)
-    die "Unknown command: $COMMAND (run with --help)"
-    ;;
+clean-baseline)
+  clean_baseline "$@"
+  ;;
+status)
+  [[ $# -eq 0 ]] || die "status takes no arguments"
+  run_remote "$TARGET" status
+  ;;
+baseline)
+  replace="no"
+  if [[ "${1:-}" == "--replace" ]]; then
+    replace="yes"
+    shift
+  fi
+  [[ $# -eq 0 ]] || die "baseline only accepts optional --replace"
+  run_remote "$TARGET" baseline "$replace"
+  ;;
+compare)
+  [[ $# -eq 0 ]] || die "compare takes no arguments"
+  run_remote "$TARGET" compare
+  ;;
+compare-clean)
+  [[ $# -eq 0 ]] || die "compare-clean takes no arguments"
+  compare_clean
+  ;;
+users | persistence | network | ssh | mariadb | audit)
+  [[ $# -eq 0 ]] || die "$COMMAND takes no arguments"
+  run_remote "$TARGET" "$COMMAND"
+  ;;
+help)
+  usage
+  ;;
+*)
+  die "Unknown command: $COMMAND (run with --help)"
+  ;;
 esac
